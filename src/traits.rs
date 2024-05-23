@@ -31,10 +31,13 @@ pub trait BasicOperations<B>
 where
     B: Queries<B> + serde::Serialize + serde::de::DeserializeOwned,
 {
-    async fn select(&self, input: Input<B>) -> Output<B, String>;
-    async fn all(&self) -> Output<B, String>;
-    async fn insert_or_update(&self, input: Input<B>) -> Output<Value, String>;
-    async fn delete(&self, input: Input<B>) -> Output<String, String>;
+    fn select(&self, input: Input<B>) -> impl std::future::Future<Output = Output<B, String>>;
+    fn all(&self) -> impl std::future::Future<Output = Output<B, String>>;
+    fn insert_or_update(
+        &self,
+        input: Input<B>,
+    ) -> impl std::future::Future<Output = Output<Value, String>>;
+    fn delete(&self, input: Input<B>) -> impl std::future::Future<Output = Output<String, String>>;
 }
 
 pub trait Queries<B> {
