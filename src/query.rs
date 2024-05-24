@@ -2,6 +2,7 @@ use super::*;
 
 use self::traits::{Input, QGEnum, Queries, QueryGeneric};
 use nanoid::nanoid;
+use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 
 impl QueryGeneric<FindQuery> for FindQuery {
@@ -63,7 +64,7 @@ pub fn new_id() -> String {
 
 impl<B> Input<B>
 where
-    B: Queries<B> + serde::Serialize + serde::de::DeserializeOwned,
+    B: Queries<B> + Serialize + DeserializeOwned,
 {
     pub fn matcher<F: QueryGeneric<F>>(&self) -> F {
         match self {

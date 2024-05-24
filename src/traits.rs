@@ -1,10 +1,12 @@
+use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
+use std::future::Future;
 
 #[allow(unused)]
 #[derive(Debug)]
 pub enum Input<B>
 where
-    B: Queries<B> + serde::Serialize + serde::de::DeserializeOwned,
+    B: Queries<B> + Serialize + DeserializeOwned,
 {
     Raw(B),
     Formatted(B),
@@ -29,15 +31,12 @@ pub enum QGEnum {
 
 pub trait BasicOperations<B>
 where
-    B: Queries<B> + serde::Serialize + serde::de::DeserializeOwned,
+    B: Queries<B> + Serialize + DeserializeOwned,
 {
-    fn select(&self, input: Input<B>) -> impl std::future::Future<Output = Output<B, String>>;
-    fn all(&self) -> impl std::future::Future<Output = Output<B, String>>;
-    fn insert_or_update(
-        &self,
-        input: Input<B>,
-    ) -> impl std::future::Future<Output = Output<Value, String>>;
-    fn delete(&self, input: Input<B>) -> impl std::future::Future<Output = Output<String, String>>;
+    fn select(&self, input: Input<B>) -> impl Future<Output = Output<B, String>>;
+    fn all(&self) -> impl Future<Output = Output<B, String>>;
+    fn insert_or_update(&self, input: Input<B>) -> impl Future<Output = Output<Value, String>>;
+    fn delete(&self, input: Input<B>) -> impl Future<Output = Output<String, String>>;
 }
 
 pub trait Queries<B> {

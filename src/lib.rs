@@ -78,7 +78,7 @@ mod tests {
             _id: None,
             _rev: None,
             name: Some("test".to_string()),
-            age: Some(10),
+            age: Some(12),
         };
 
         let mut conn = Conn::new().await;

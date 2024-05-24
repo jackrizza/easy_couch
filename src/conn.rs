@@ -3,6 +3,7 @@ use super::*;
 use self::traits::{Input, Output, Queries};
 
 use couch_rs::types::document::DocumentCreatedDetails;
+use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 use traits::BasicOperations;
 
@@ -44,7 +45,7 @@ impl Conn {
 
 impl<B> BasicOperations<B> for Conn
 where
-    B: serde::Serialize + serde::de::DeserializeOwned + Queries<B>,
+    B: Serialize + DeserializeOwned + Queries<B>,
 {
     async fn select(&self, input: Input<B>) -> Output<B, String> {
         let db = self.raw_database();
