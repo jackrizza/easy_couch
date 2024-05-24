@@ -14,12 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: update
-        run: sudo apt update && sudo apt install -y curl apt-transport-https gnupg
       - name: add couchdb key
-        run: curl https://couchdb.apache.org/repo/keys.asc | gpg --dearmor | sudo tee /usr/share/keyrings/couchdb-archive-keyring.gpg >/dev/null 2>&1
-      - name: source repository
-        run: source /etc/os-release
+        run: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -
+      - name: update
+        run: sudo apt update
       - name: Install dependencies
         run: sudo apt install -y couchdb
       - name: env file
