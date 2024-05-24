@@ -10,14 +10,16 @@ pub mod traits;
 #[cfg(test)]
 mod tests {
 
-    use super::*;
-
     use self::traits::QueryGeneric;
+    use super::*;
     use conn::Conn;
     use query::new_id;
+    use query_macro::QueryMacro;
+    use serde::{Deserialize, Serialize};
     use serde_json::Value;
     use traits::{BasicOperations, Input, Output, QGEnum, Queries};
-    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+
+    #[derive(Debug, Serialize, Deserialize, QueryMacro)]
     struct Test {
         #[serde(skip_serializing_if = "Option::is_none")]
         _id: Option<String>,
@@ -29,15 +31,6 @@ mod tests {
         age: Option<i32>,
     }
 
-    impl Queries<Test> for Test {
-        fn query_fmt(&self) -> Result<Value, String> {
-            Ok(serde_json::to_value(self).unwrap())
-        }
-        fn query<T: QueryGeneric<T>>(&self, input: Value) -> Result<T, String> {
-            let res: T = T::new_with_input(QGEnum::Val(input));
-            Ok(res)
-        }
-    }
     #[tokio::test]
     async fn select() {
         let test = Test {
@@ -69,7 +62,7 @@ mod tests {
             _id: Some(new_id()),
             _rev: None,
             name: Some("jack".to_string()),
-            age: Some(25),
+            age: Some(10),
         };
 
         let mut conn = Conn::new().await;
