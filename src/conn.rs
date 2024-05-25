@@ -27,14 +27,13 @@ impl Conn {
         }
     }
 
-    pub async fn db(&mut self, db: &str) {
+    pub async fn db(&mut self, db: &str) -> Result<(), String> {
         match self._conn {
             Ok(ref mut conn) => {
                 self.database = conn.db(db).await.ok();
+                Ok(())
             }
-            Err(ref e) => {
-                eprintln!("Error: {}", e);
-            }
+            Err(ref e) => Err(format!("Error: {}", e)),
         }
     }
 

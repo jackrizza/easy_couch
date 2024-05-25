@@ -41,7 +41,7 @@ mod tests {
         };
 
         let mut conn = Conn::new().await;
-        conn.db("test").await;
+        let _ = conn.db("test").await;
 
         let select = conn.select(Input::Raw(test)).await;
         println!("{:#?}", select);
@@ -50,7 +50,7 @@ mod tests {
     #[tokio::test]
     async fn all() {
         let mut conn = Conn::new().await;
-        conn.db("test").await;
+        let _ = conn.db("test").await;
 
         let select: Output<Test, String> = conn.all().await;
         println!("{:#?}", select);
@@ -66,7 +66,7 @@ mod tests {
         };
 
         let mut conn = Conn::new().await;
-        conn.db("test").await;
+        let _ = conn.db("test").await;
 
         let upsert = conn.insert_or_update(Input::Raw(test)).await;
         println!("{:#?}", upsert);
@@ -82,7 +82,7 @@ mod tests {
         };
 
         let mut conn = Conn::new().await;
-        conn.db("test").await;
+        let _ = conn.db("test").await;
 
         let select: Output<String, String> = conn.delete(Input::Raw(test)).await;
         println!("{:?}", select);

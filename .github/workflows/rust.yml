@@ -12,22 +12,26 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        couchdb: ["3.3"] #"3.2", "3.1", "2.3"
 
     steps:
-      - name: update
-        run: sudo apt update && sudo apt install -y curl apt-transport-https gnupg
-      - name: add couchdb key
-        run: curl https://couchdb.apache.org/repo/keys.asc | gpg --dearmor | sudo tee /usr/share/keyrings/couchdb-archive-keyring.gpg >/dev/null 2>&1
-      - name: source repository
-        run: source /etc/os-release
-      - name: add key
-        run: echo "deb [signed-by=/usr/share/keyrings/couchdb-archive-keyring.gpg] https://apache.jfrog.io/artifactory/couchdb-deb/ ${VERSION_CODENAME} main" \ | sudo tee /etc/apt/sources.list.d/couchdb.list >/dev/null
-      - name: Install dependencies
-        run: sudo apt install -y couchdb
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: Start CouchDB
+        uses: iamssen/couchdb-github-action@master
+        with:
+          couchdb-version: ${{ matrix.couchdb }}
       - name: env file
-        run: echo "USERNAME=admin\nPASSWORD\nURL=http://localhost:5984" > .env
+        run: echo -e "URL=http://localhost:5984\nUSERNAME=admin\nPASSWORD=password" > .env
+      - name: cat env
+        run: cat .env
       - uses: actions/checkout@v4
-      - name: Build
-        run: cargo build --verbose
-      - name: Run tests
-        run: cargo test --verbose
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
