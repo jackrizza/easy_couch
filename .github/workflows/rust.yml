@@ -14,8 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: add couchdb key
-        run: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -
+      - name: transport and gnupg
+        run: sudo apt install -y curl apt-transport-https gnupg
+      - name : keys
+        run: curl https://couchdb.apache.org/repo/keys.asc | gpg --dearmor | sudo tee /usr/share/keyrings/couchdb-archive-keyring.gpg >/dev/null 2>&1
+      - name: add couchdb to repositories
+        run: echo "deb [signed-by=/usr/share/keyrings/couchdb-archive-keyring.gpg] https://apache.jfrog.io/artifactory/couchdb-deb/ jammy  main" | sudo tee /etc/apt/sources.list.d/couchdb.list >/dev/null
       - name: update
         run: sudo apt update
       - name: Install dependencies
