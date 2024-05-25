@@ -23,7 +23,7 @@ jobs:
       - name: update
         run: sudo apt update
       - name: Install dependencies
-        run: sudo apt install -y couchdb
+        run: sudo apt --fix-broken install -y couchdb
       - name: env file
         run: echo "USERNAME=admin\nPASSWORD\nURL=http://localhost:5984" > .env
       - uses: actions/checkout@v4
