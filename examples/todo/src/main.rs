@@ -97,12 +97,18 @@ impl eframe::App for MyApp {
                                     ui.horizontal(|ui| {
                                         if ui.add(egui::Button::new("view")).clicked() {
                                             self.todos[i].edit = Some(!todo.edit.unwrap_or(false));
+                                            let _ =
+                                                self.tokio_update_or_insert(self.todos[i].clone());
+                                            self.tokio_get();
                                         }
                                     });
                                 } else {
                                     ui.horizontal(|ui| {
                                         if ui.add(egui::Button::new("edit")).clicked() {
                                             self.todos[i].edit = Some(!todo.edit.unwrap_or(false));
+                                            let _ =
+                                                self.tokio_update_or_insert(self.todos[i].clone());
+                                            self.tokio_get();
                                         }
                                         if ui.add(egui::Button::new("delete")).clicked() {
                                             let _ = self.tokio_delete(todo.clone());
