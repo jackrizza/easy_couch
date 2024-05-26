@@ -1,6 +1,6 @@
 use crate::scheme::Todo;
-use EasyCouch::conn::Conn;
-use EasyCouch::traits::{BasicOperations, Input, Output};
+use easy_couch::conn::Conn;
+use easy_couch::traits::{BasicOperations, Input, Output};
 
 pub struct MyApp {
     pub todos: Vec<Todo>,

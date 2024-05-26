@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-EasyCouch = { path = "../../" }
+easy_couch = { path = "../../" }
 query_macro = { path = "../../query_macro" }
 eframe = "0.27.2"
 egui = "0.27.2"

@@ -1,6 +1,6 @@
-workspace = { members = [ "examples/todo","query_macro"] }
+workspace = { members = ["examples/todo", "query_macro"] }
 [package]
-name = "EasyCouch"
+name = "easy_couch"
 version = "0.1.0"
 edition = "2021"
 

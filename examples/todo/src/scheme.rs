@@ -1,7 +1,7 @@
+use easy_couch::traits::{QGEnum, Queries, QueryGeneric};
 use query_macro::QueryMacro;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use EasyCouch::traits::{QGEnum, Queries, QueryGeneric};
 
 #[derive(Debug, Clone, Serialize, Deserialize, QueryMacro)]
 pub struct Todo {
