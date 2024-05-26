@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: env file
-        run: echo -e "URL=http://localhost:5984\nUSERNAME=admin\nPASSWORD=password" > .env
+        run: echo -e "URL=http://localhost:5984\nUSERNAME=admin\nPASSWORD=password\n" > .env
       - name: cat env
         run: cat .env
       - uses: actions/checkout@v4
