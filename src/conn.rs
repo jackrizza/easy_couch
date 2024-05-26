@@ -1,11 +1,10 @@
-use super::*;
-
-use self::traits::{Input, Output, Queries};
-
+use crate::traits::{BasicOperations, Input, Output, Queries};
+use crate::Database;
+use couch_rs::error::CouchError;
 use couch_rs::types::document::DocumentCreatedDetails;
+use dotenv::dotenv;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
-use traits::BasicOperations;
 
 pub struct Conn {
     _conn: Result<couch_rs::Client, CouchError>,
@@ -14,7 +13,7 @@ pub struct Conn {
 
 #[allow(unused)]
 impl Conn {
-    pub async fn new() -> Self {
+    pub async fn new_dot() -> Self {
         dotenv().ok();
 
         let username = std::env::var("USERNAME").expect("No Username");
@@ -23,6 +22,13 @@ impl Conn {
 
         Self {
             _conn: couch_rs::Client::new(&url, &username, &password),
+            database: None,
+        }
+    }
+
+    pub async fn new_str(url: &str, username: &str, password: &str) -> Self {
+        Self {
+            _conn: couch_rs::Client::new(url, username, password),
             database: None,
         }
     }

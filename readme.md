@@ -20,7 +20,7 @@ async fn select() {
     bar: Some("baz".to_string()),
   };
 
-  let mut conn = Conn::new().await;
+  let mut conn = Conn::new_dot().await;
   let _ = conn.db("foobar").await;
 
   let select = conn.select(Input::Raw(foo)).await;
@@ -34,7 +34,7 @@ async fn select() {
 
 ### .env
 
-a `.env` file is required for operation in your working directory. 
+a `.env` file is required for operation in your working directory.
 
 ```bash
 USERNAME=INSERT_USERNAME
@@ -48,12 +48,11 @@ URL=INSERT_URL_WITH_PORT
 #### Egui Todo Example
 The `examples/todo` directory contains a simple todo application that uses EasyCouch to interact with a CouchDB instance. The application uses the egui library for the GUI. To run the example, you need to have a CouchDB instance running.
 
-![Alt text](examples/todo/example_screenshot.png "a title")
+![Alt text](examples/todo/example_screenshot.png "Example screenshot")
 
 
 
 #### Future implentations
-
-- [ ] non dotenv connection alternative
+- [x] non dotenv connection alternative
 - [ ] omni document collection
 - [ ] better tests

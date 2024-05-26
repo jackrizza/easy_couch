@@ -1,6 +1,6 @@
 use super::*;
 
-use self::traits::{Input, QGEnum, Queries, QueryGeneric};
+use crate::traits::{Input, QGEnum, Queries, QueryGeneric};
 use nanoid::nanoid;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;

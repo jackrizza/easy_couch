@@ -26,7 +26,7 @@ impl MyApp {
     }
 
     pub async fn get(&mut self) {
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("todos").await;
 
         let select: Output<Todo, String> = conn.all().await;
@@ -46,7 +46,7 @@ impl MyApp {
     }
 
     pub async fn update_or_insert(&self, input: Todo) {
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("todos").await;
 
         let _ = conn.insert_or_update(Input::Raw(input)).await;
@@ -61,7 +61,7 @@ impl MyApp {
     }
 
     pub async fn delete(&self, input: Todo) {
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("todos").await;
 
         let _ = conn.delete(Input::Raw(input)).await;

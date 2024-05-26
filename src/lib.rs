@@ -1,12 +1,10 @@
 use couch_rs::database::Database;
-use couch_rs::error::CouchError;
 use couch_rs::types::find::FindQuery;
-use dotenv::dotenv;
 
 pub mod conn;
 pub mod query;
+pub extern crate query_macro;
 pub mod traits;
-extern crate query_macro;
 
 #[cfg(test)]
 mod tests {
@@ -41,7 +39,7 @@ mod tests {
             age: None,
         };
 
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("test").await;
 
         let select = conn.select(Input::Raw(test)).await;
@@ -50,7 +48,7 @@ mod tests {
 
     #[tokio::test]
     async fn all() {
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("test").await;
 
         let select: Output<Test, String> = conn.all().await;
@@ -66,7 +64,7 @@ mod tests {
             age: Some(10),
         };
 
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("test").await;
 
         let upsert = conn.insert_or_update(Input::Raw(test)).await;
@@ -82,7 +80,7 @@ mod tests {
             age: Some(12),
         };
 
-        let mut conn = Conn::new().await;
+        let mut conn = Conn::new_dot().await;
         let _ = conn.db("test").await;
 
         let select: Output<String, String> = conn.delete(Input::Raw(test)).await;
