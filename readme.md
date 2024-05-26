@@ -14,7 +14,7 @@ struct Foo {
 }
 
 async fn select() {
-	let foo = Foo {
+  let foo = Foo {
     _id: None,
     _rev: None,
     bar: Some("baz".to_string()),
