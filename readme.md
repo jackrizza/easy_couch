@@ -24,7 +24,7 @@ async fn select() {
   let _ = conn.db("foobar").await;
 
   let select = conn.select(Input::Raw(foo)).await;
- 	println!("{:#?}", select);
+  println!("{:#?}", select);
 }
 
 
