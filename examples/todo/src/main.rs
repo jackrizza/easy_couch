@@ -2,8 +2,7 @@
 #![allow(rustdoc::missing_crate_level_docs)] // it's an example
 
 use eframe::egui;
-use egui::TextBuffer;
-use egui_extras::{Column, TableBody, TableBuilder};
+use egui_extras::{Column, TableBuilder};
 use EasyCouch::query::new_id;
 mod scheme;
 
@@ -14,13 +13,13 @@ use scheme::Todo;
 fn main() -> Result<(), eframe::Error> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
+        viewport: egui::ViewportBuilder::default().with_inner_size([480.0, 640.0]),
         ..Default::default()
     };
     eframe::run_native(
         "EasyCouch Todo",
         options,
-        Box::new(|cc| Box::<MyApp>::default()),
+        Box::new(|_| Box::<MyApp>::default()),
     )
 }
 
@@ -30,30 +29,11 @@ impl eframe::App for MyApp {
             let _ = self.tokio_get();
         }
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.horizontal(|ui| {
-                ui.label("todo_item");
-                ui.text_edit_singleline(&mut self.form_item);
-            });
-            ui.horizontal(|ui| {
-                let add = ui.button("add test");
-                if add.clicked() {
-                    let todo = Todo {
-                        _id: Some(new_id()),
-                        _rev: None,
-                        item: Some(self.form_item.clone()),
-                        completed: Some(false),
-                        edit: Some(false),
-                    };
-                    let _ = self.tokio_update_or_insert(todo);
-                    self.form_item = "".into();
-                    self.tokio_get();
-                }
-            });
             TableBuilder::new(ui)
-                .column(Column::auto().resizable(false))
+                .column(Column::exact(196.0))
                 .column(Column::remainder())
                 .column(Column::remainder())
-                .header(60.0, |mut header| {
+                .header(30.0, |mut header| {
                     header.col(|ui| {
                         ui.heading("todo item");
                     });
@@ -65,8 +45,33 @@ impl eframe::App for MyApp {
                     });
                 })
                 .body(|mut body| {
+                    body.row(30.0, |mut row| {
+                        row.col(|ui| {
+                            ui.text_edit_singleline(&mut self.form_item);
+                        });
+                        row.col(|ui| {
+                            ui.label("");
+                        });
+                        row.col(|ui| {
+                            if ui.button("add todo").clicked() {
+                                if self.form_item.is_empty() {
+                                    return;
+                                }
+                                let todo = Todo {
+                                    _id: Some(new_id()),
+                                    _rev: None,
+                                    item: Some(self.form_item.clone()),
+                                    completed: Some(false),
+                                    edit: Some(false),
+                                };
+                                let _ = self.tokio_update_or_insert(todo);
+                                self.form_item = "".into();
+                                self.tokio_get();
+                            }
+                        });
+                    });
                     for (i, todo) in self.todos.clone().iter().enumerate() {
-                        body.row(60.0, |mut row| {
+                        body.row(40.0, |mut row| {
                             row.col(|ui| {
                                 if todo.edit.unwrap_or(false) == true {
                                     let mut tmp = todo.item.clone().unwrap_or("".into());
@@ -79,13 +84,9 @@ impl eframe::App for MyApp {
                                 } else {
                                     ui.label(todo.item.clone().unwrap_or("".into()));
                                 }
-                                // ui.label(todo.item.clone().unwrap_or("".into()));
                             });
                             row.col(|ui| {
-                                if ui
-                                    .checkbox(&mut todo.completed.unwrap(), "Checked")
-                                    .changed()
-                                {
+                                if ui.checkbox(&mut todo.completed.unwrap(), "").changed() {
                                     let mut t = todo.clone();
                                     t.completed = Some(!todo.completed.unwrap_or(false));
                                     let _ = self.tokio_update_or_insert(t);

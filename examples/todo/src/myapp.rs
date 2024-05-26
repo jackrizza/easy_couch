@@ -17,12 +17,8 @@ impl Default for MyApp {
 }
 
 impl MyApp {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn tokio_get(&mut self) {
-        let result: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
+        let _: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()
             .unwrap()
@@ -42,7 +38,7 @@ impl MyApp {
     }
 
     pub fn tokio_update_or_insert(&self, input: Todo) {
-        let result: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
+        let _: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()
             .unwrap()
@@ -57,7 +53,7 @@ impl MyApp {
     }
 
     pub fn tokio_delete(&self, input: Todo) {
-        let result: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
+        let _: Result<_, String> = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()
             .unwrap()

@@ -6,7 +6,6 @@ use dotenv::dotenv;
 pub mod conn;
 pub mod query;
 pub mod traits;
-#[macro_use]
 extern crate query_macro;
 
 #[cfg(test)]

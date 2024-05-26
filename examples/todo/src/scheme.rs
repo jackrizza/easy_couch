@@ -1,4 +1,3 @@
-use super::*;
 use query_macro::QueryMacro;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -16,16 +15,4 @@ pub struct Todo {
     pub completed: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub edit: Option<bool>,
-}
-
-impl Todo {
-    pub fn empty() -> Self {
-        Self {
-            _id: None,
-            _rev: None,
-            item: None,
-            completed: None,
-            edit: None,
-        }
-    }
 }
